@@ -52,7 +52,7 @@ userSchema.set('toJSON', {
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = sign({ _id: user._id.toString(), isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  const token = sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '5h' });
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;

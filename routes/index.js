@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const { register, login } = require('../controllers/auth');
+const { verifyToken } = require('../utils/verifyToken');
+const { addFundRaisingDetails } = require('../controllers/applicant.controller');
 
 /**
  * @swagger
@@ -72,5 +74,7 @@ router.post('/auth/register', register);
  *         description: Server Error
  */
 router.post('/auth/login', login);
+
+router.post('/upload', verifyToken, addFundRaisingDetails);
 
 module.exports = router;
