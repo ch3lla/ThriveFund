@@ -38,7 +38,7 @@ const addFundRaisingDetails = async (req, res) => {
             });
             await newApplicant.save();
       
-            res.status(200).json({ message: 'Applicant details and files saved successfully!' });
+            res.status(201).json({ message: 'Applicant details and files saved successfully!' });
           });
 
     } catch (error){
