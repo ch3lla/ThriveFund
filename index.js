@@ -17,8 +17,8 @@ app.use(cors());
 app.options(`${process.env.FRONTEND_URL}`, cors()); // * will be changed to specified url later on
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-app.use(json());
-app.use(urlencoded({ extended: true }));
+app.use(json({ limit: '50mb' }));
+app.use(urlencoded({ limit: '50mb', extended: true }));
 
 // routes
 app.use('/api/v1', apiRoutes);
