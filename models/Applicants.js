@@ -59,7 +59,7 @@ const applicantSchema = new Schema({
   deadline: {
     type: Date,
   },
-  fundingMedia: [fileSchema],
+  fundingMedia: [{ type: Schema.Types.ObjectId, ref: 'File' }],
 }, { timestamps: true });
 
 const Applicant = model('Applicant', applicantSchema);

@@ -1,55 +1,70 @@
 const { request, response } = require('express');
 const Applicant = require('../models/Applicants');
+const File = require('../models/File');
 const upload = require('../utils/multerConfig');
 const errorHandler = require('../utils/errorHandler');
 
-/**
- * Handles fund raiser creation logic
- * @param { request } req
- * @param { response } res
- */
 const addFundRaisingDetails = async (req, res) => {
-    const { _id } = req.user;
+  const { _id } = req.user;
 
-    if (!_id){
-        res.status(401).json({ message: "Invalid token"});
-    }
+  if (!_id) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
 
-    try {
-        upload.array('uploads')(req, res, async (err) => {
-            if (err) {
-              return errorHandler(req, err);
-            }
-            const { firstname, lastname, email, phone, address, fundraiserTitle, fundraiserDescription, goal, category, deadline } = req.body;
+  try {
+    upload.array('uploads')(req, res, async (err) => {
+      if (err) {
+        return errorHandler(req, err);
+      }
 
-            const fundingMedia = req.files.map(file => ({
-              name: file.originalname,
-              data: file.buffer,
-              contentType: file.mimetype
-          }));
+      const {
+        firstname,
+        lastname,
+        email,
+        phone,
+        address,
+        fundraiserTitle,
+        fundraiserDescription,
+        goal,
+        category,
+        deadline,
+      } = req.body;
 
-            const newApplicant = new Applicant({
-              userId: _id,
-              firstname,
-              lastname,
-              email,
-              phone,
-              address,
-              fundraiserTitle,
-              fundraiserDescription,
-              goal,
-              category,
-              deadline,
-              fundingMedia, // Assign uploaded files
-            });
-            await newApplicant.save();
-      
-            res.status(201).json({ message: 'Applicant details and files saved successfully!' });
-          });
+      const fundingMedia = req.files
+        ? await Promise.all(
+            req.files.map(async (file) => {
+              const newFile = new File({
+                name: file.originalname,
+                data: file.buffer,
+                contentType: file.mimetype,
+              });
+              const savedFile = await newFile.save();
+              return savedFile._id;
+            })
+          )
+        : [];
 
-    } catch (error){
-        errorHandler(req, error);
-    }
-}
+      const newApplicant = new Applicant({
+        userId: _id,
+        firstname,
+        lastname,
+        email,
+        phone,
+        address,
+        fundraiserTitle,
+        fundraiserDescription,
+        goal,
+        category,
+        deadline,
+        fundingMedia,
+      });
 
-module.exports = { addFundRaisingDetails }
+      await newApplicant.save();
+      res.status(201).json({ message: 'Applicant details and files saved successfully!' });
+    });
+  } catch (error) {
+    errorHandler(req, error);
+  }
+};
+
+module.exports = { addFundRaisingDetails };
