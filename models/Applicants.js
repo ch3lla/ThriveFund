@@ -59,7 +59,7 @@ const applicantSchema = new Schema({
   deadline: {
     type: Date,
   },
-  uploads: fileSchema,
+  fundingMedia: [fileSchema],
 }, { timestamps: true });
 
 const Applicant = model('Applicant', applicantSchema);

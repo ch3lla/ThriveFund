@@ -21,7 +21,13 @@ const addFundRaisingDetails = async (req, res) => {
               return errorHandler(req, err);
             }
             const { firstname, lastname, email, phone, address, fundraiserTitle, fundraiserDescription, goal, category, deadline } = req.body;
-    
+
+            const fundingMedia = req.files.map(file => ({
+              name: file.originalname,
+              data: file.buffer,
+              contentType: file.mimetype
+          }));
+
             const newApplicant = new Applicant({
               userId: _id,
               firstname,
@@ -34,7 +40,7 @@ const addFundRaisingDetails = async (req, res) => {
               goal,
               category,
               deadline,
-              uploads: req.files, // Assign uploaded files
+              fundingMedia, // Assign uploaded files
             });
             await newApplicant.save();
       
