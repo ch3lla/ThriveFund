@@ -1,6 +1,6 @@
 const { request, response } = require('express');
 const Applicant = require('../models/Applicants');
-const File = require('../models/File');
+const File = require('../models/Files');
 const upload = require('../utils/multerConfig');
 const errorHandler = require('../utils/errorHandler');
 
