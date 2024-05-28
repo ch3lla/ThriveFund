@@ -10,9 +10,13 @@ const app = express();
 // connecting database
 db();
 
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://thrivefund.vercel.app'],
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 // middlewares
-app.use(cors());
-app.options(`${process.env.FRONTEND_URL}`, cors()); // * will be changed to specified url later on
+app.use(cors(corsOptions));
 app.use(json({ limit: '50mb' }));
 app.use(urlencoded({ limit: '50mb', extended: true }));
 
