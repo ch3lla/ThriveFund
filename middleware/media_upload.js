@@ -6,7 +6,7 @@ async function uploadStream(buffer) {
     const options = {
         use_filename: true,
         resource_type: "auto",
-        folder: 'trivefund'
+        folder: 'thrivefund'
     }
     const theTransformStream = cloudinary.uploader.upload_stream(
       options,
