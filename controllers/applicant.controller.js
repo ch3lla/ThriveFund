@@ -14,7 +14,7 @@ const addFundRaisingDetails = async (req, res) => {
   try {
     upload.array('uploads')(req, res, async (err) => {
       if (err) {
-        return errorHandler(req, err);
+        return errorHandler(res, err);
       }
 
       const {
