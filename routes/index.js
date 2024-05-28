@@ -1,12 +1,14 @@
 const router = require('express').Router();
 const { register, login } = require('../controllers/auth');
 const { verifyToken } = require('../utils/verifyToken');
-const upload = require('../utils/multerConfig');
 const { addFundRaisingDetails } = require('../controllers/applicant.controller');
+const {
+    processFileUpload,
+  } = require("../middlewares/media_upload");
 
 router.post('/auth/register', register);
 router.post('/auth/login', login);
 
-router.post('/upload', verifyToken, upload.array('uploads'), addFundRaisingDetails);
+router.post('/upload', verifyToken, processFileUpload, addFundRaisingDetails);
 
 module.exports = router;

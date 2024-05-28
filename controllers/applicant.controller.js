@@ -12,10 +12,6 @@ const addFundRaisingDetails = async (req, res) => {
   }
 
   try {
-    upload.array('uploads')(req, res, async (err) => {
-      if (err) {
-        return errorHandler(err, res);
-      }
 
       const {
         firstname,
@@ -30,19 +26,12 @@ const addFundRaisingDetails = async (req, res) => {
         deadline,
       } = req.body;
 
-      const fundingMedia = req.files
-        ? await Promise.all(
-            req.files.map(async (file) => {
-              const newFile = new File({
-                name: file.originalname,
-                data: file.buffer,
-                contentType: file.mimetype,
-              });
-              const savedFile = await newFile.save();
-              return savedFile._id;
-            })
-          )
-        : [];
+      const fundingMedia =
+        {
+          name: req.body.name,
+          pathToFile: req.body.pathToFile,
+          publicId: req.body.publicId
+        };
 
       const newApplicant = new Applicant({
         userId: _id,
@@ -61,7 +50,6 @@ const addFundRaisingDetails = async (req, res) => {
 
       await newApplicant.save();
       res.status(201).json({ message: 'Applicant details and files saved successfully!' });
-    });
   } catch (error) {
     errorHandler(error, res);
   }

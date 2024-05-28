@@ -2,10 +2,19 @@ const { Schema, model } = require('mongoose');
 const { isMobilePhone, isEmail } = require('validator');
 
 const fileSchema = new Schema({
-    name: String,
-    data: Buffer,
-    contentType: String,
-  });
+  name: {
+    type: String,
+    required: [true, "Media name is required"],
+  },
+  pathToFile: {
+    type: String,
+    required: [true, "Media url is required"],
+  },
+  publicId: {
+    type: String,
+    required: [true, "Media public id is required"],
+  }
+});
 
 const applicantSchema = new Schema({
   userId: {
@@ -59,7 +68,7 @@ const applicantSchema = new Schema({
   deadline: {
     type: Date,
   },
-  fundingMedia: [{ type: Schema.Types.ObjectId, ref: 'File' }],
+  fundingMedia: [fileSchema],
 }, { timestamps: true });
 
 const Applicant = model('Applicant', applicantSchema);
