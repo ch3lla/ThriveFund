@@ -14,7 +14,7 @@ const addFundRaisingDetails = async (req, res) => {
   try {
     upload.array('uploads')(req, res, async (err) => {
       if (err) {
-        return errorHandler(res, err);
+        return errorHandler(err, res);
       }
 
       const {
@@ -63,7 +63,7 @@ const addFundRaisingDetails = async (req, res) => {
       res.status(201).json({ message: 'Applicant details and files saved successfully!' });
     });
   } catch (error) {
-    errorHandler(req, error);
+    errorHandler(error, res);
   }
 };
 
