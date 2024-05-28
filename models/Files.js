@@ -10,7 +10,7 @@ const fileSchema = new Schema({
     required: [true, "Media public id is required"],
   },
   uploadedBy: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Coordinator",
     required: [true, "Media uploader is required"],
   },
