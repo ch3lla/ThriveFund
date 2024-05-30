@@ -34,7 +34,7 @@ const processFileUpload = async function (req, res, next) {
         "image/jpg"
       ];
       
-      if (!allowedMimeTypes.includes(req.files.fundingMedia.mimetype)) {
+      if (!allowedMimeTypes.includes(req.files.fundingMedia.file.mimetype)) {
         res.status(400).json({ message: "Only PDF, JPG, JPEG, and PNG files are allowed" });
         return;
       }
