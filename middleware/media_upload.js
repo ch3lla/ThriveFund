@@ -34,19 +34,19 @@ const processFileUpload = async function (req, res, next) {
         "image/jpg"
       ];
       
-      if (!allowedMimeTypes.includes(req.files.form.mimetype)) {
+      if (!allowedMimeTypes.includes(req.files.fundingMedia.mimetype)) {
         res.status(400).json({ message: "Only PDF, JPG, JPEG, and PNG files are allowed" });
         return;
       }
       
 
-    const buffer = req.files.form.data;
+    const buffer = req.files.fundingMedia.data;
     const result = await uploadStream(buffer);
 
     // update the req.body
     req.body = {
       ...req.body,
-      name: req.files.form.name.toLowerCase(),
+      name: req.files.fundingMedia.name.toLowerCase(),
       pathToFile: result.secure_url,
       publicId: result.public_id
     };

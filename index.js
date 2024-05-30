@@ -4,6 +4,7 @@ const { json, urlencoded } = require('express');
 const cors = require('cors');
 const db = require('./config/db');
 const cloudinary = require('cloudinary').v2;
+const fileUpload = require("express-fileupload");
 
 const apiRoutes = require('./routes/index');
 
@@ -27,7 +28,17 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(json({ limit: '50mb' }));
 app.use(urlencoded({ limit: '50mb', extended: true }));
-
+app.use(
+  fileUpload({
+    limits: {
+      fileSize: 25 * 1024 * 1024,
+    },
+    safeFileNames: true,
+    preserveExtension: true,
+    abortOnLimit: true,
+    responseOnLimit: "Max file size is 25mb",
+  })
+);
 // routes
 app.use('/api/v1', apiRoutes);
 
