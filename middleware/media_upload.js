@@ -37,7 +37,7 @@ const processFileUpload = async function (req, res, next) {
       console.log("req files - ", req.files);
       console.log("funding media - ", req.files.fundingMedia);
 
-      const file = req.files.fundingMedia;
+      const file = req.files;
       const mimeType = file.mimetype || file.type;
 
       if (!allowedMimeTypes.includes(mimeType)) {
