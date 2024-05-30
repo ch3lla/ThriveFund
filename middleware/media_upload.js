@@ -34,6 +34,9 @@ const processFileUpload = async function (req, res, next) {
         "image/jpg"
       ];
       
+      console.log("req files - ", req.files);
+      console.log("funding media - ", req.files.fundingMedia);
+
       const file = req.files.fundingMedia;
       const mimeType = file.mimetype || file.type;
 
