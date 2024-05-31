@@ -53,4 +53,39 @@ const addFundRaisingDetails = async (req, res) => {
   }
 };
 
-module.exports = { addFundRaisingDetails };
+const getApplicantDetailsByCategory = async (req, res) => {
+  try {
+    let { category } = req.params;
+
+    if (!category) {
+      res.status(400).json({ message: 'Category cannot be null'});
+    }
+
+    const applicantDetails = await Applicant.find({ category });
+
+    if (!applicantDetails || applicantDetails.length === 0) {
+      return res.status(404).json({ message: 'No applicants found for this category' });
+    }
+
+    res.status(200).json(applicantDetails);
+    
+  } catch (error) {
+    errorHandler(error, res);
+  }
+}
+
+const getAllApplicantDetails = async (req, res) => {
+  try {
+    const applicantDetails = await Applicant.find();
+
+    if (!applicantDetails || applicantDetails.length === 0) {
+      return res.status(404).json({ message: 'No applicants found' });
+    }
+
+    res.status(200).json(applicantDetails);
+    
+  } catch (error) {
+    errorHandler(error, res);
+  }
+}
+module.exports = { addFundRaisingDetails, getApplicantDetailsByCategory, getAllApplicantDetails };

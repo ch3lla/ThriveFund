@@ -69,6 +69,7 @@ const applicantSchema = new Schema({
     type: Date,
   },
   fundingMedia: [fileSchema],
+  isApproved: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const Applicant = model('Applicant', applicantSchema);
