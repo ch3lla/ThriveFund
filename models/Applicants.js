@@ -33,7 +33,6 @@ const applicantSchema = new Schema({
     type: String,
     required: [true, 'Email is required.'],
     lowercase: true,
-    unique: true,
     validate: [isEmail, 'Email must be a valid email.'],
     trim: true,
   },

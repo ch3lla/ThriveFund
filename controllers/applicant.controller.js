@@ -88,4 +88,5 @@ const getAllApplicantDetails = async (req, res) => {
     errorHandler(error, res);
   }
 }
+
 module.exports = { addFundRaisingDetails, getApplicantDetailsByCategory, getAllApplicantDetails };
