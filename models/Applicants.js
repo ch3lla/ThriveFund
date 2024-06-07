@@ -68,7 +68,8 @@ const applicantSchema = new Schema({
     type: Date,
   },
   fundingMedia: [fileSchema],
-  isApproved: { type: Boolean, default: true }
+  isApproved: { type: Boolean, default: true },
+  amountRaised: { type: Number, default: 0 }
 }, { timestamps: true });
 
 const Applicant = model('Applicant', applicantSchema);
