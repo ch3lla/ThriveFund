@@ -26,7 +26,12 @@ const corsOptions = {
 
 // middlewares
 app.use(cors(corsOptions));
-app.use(json({ limit: '50mb' }));
+app.use(express.json({
+  limit: '50mb',
+  verify: (req, res, buf) => {
+    req.rawBody = buf;
+  }
+}));
 app.use(urlencoded({ limit: '50mb', extended: true }));
 app.use(
   fileUpload({
