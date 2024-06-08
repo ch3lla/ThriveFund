@@ -47,7 +47,7 @@ const webhook = async (req, res) => {
               const paymentIntent = event.data.object;
               const id =  event.data.object.metadata['x-fundraiser-id'];
               await saveTransactionDetails(paymentIntent);
-              await Applicant.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(payload.bill) }}, {new: true});
+              await Applicant.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(payload.bill), donations: 1  }}, {new: true});
             case 'payment_intent.payment_failed':
                 const paymentIntentFailed = event.data.object;
                 // Handle failed payment
