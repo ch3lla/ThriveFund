@@ -45,7 +45,7 @@ const webhook = async (req, res) => {
         switch (event.type) {
             case 'payment_intent.succeeded':
               const paymentIntent = event.data.object;
-              const id =  event.data.object.metadata['x-fundraiser-id'];
+              const id =  event.data.object.metadata['fundraiserId'];
               await saveTransactionDetails(paymentIntent);
               let response = await Applicant.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(payload.bill), donations: 1  }}, {new: true});
               if (response){
