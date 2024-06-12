@@ -51,6 +51,6 @@ app.use('/api/v1', apiRoutes);
 // web socket for payment listener
 startSocketServer(process.env.PORT);
 
-app.listen(process.env.PORT, () => {
+/* app.listen(process.env.PORT, () => {
   console.log(`Server is running on localhost:${process.env.PORT}`);
-});
+}); */
