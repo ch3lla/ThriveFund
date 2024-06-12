@@ -2,7 +2,7 @@ const Stripe = require('stripe');
 const errorHandler = require('../utils/errorHandler');
 const Donor = require('../models/Donors');
 const Applicant = require('../models/Applicants');
-const { notifySocketAfterSuccessfulPayment } = require('./helpers/socket');
+const { notifySocketAfterSuccessfulPayment } = require('../helpers/socket');
 
 
 const createPaymentIntent = async (req, res) => {
