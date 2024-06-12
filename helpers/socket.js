@@ -17,8 +17,11 @@ io.on('connection', (socket) => {
   });
 });
 
-const notifySocketAfterSuccessfulPayment = (fundraiserId, newAmountRaised) => {
-  io.emit('paymentReceived', { fundraiserId, newAmountRaised });
+const notifySocketAfterSuccessfulPayment = (fundraiserId, newAmountRaised, donorName, donorAmount, anonimity) => {
+    if (anonimity){
+        io.emit('paymentReceived', { fundraiserId, newAmountRaised, donorAmount });
+    }
+  io.emit('paymentReceived', { fundraiserId, newAmountRaised, donorName, donorAmount });
 };
 
 const startSocketServer = (port) => {
