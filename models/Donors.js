@@ -6,7 +6,7 @@ const donorSchema = new Schema({
     currency: { type: String },
     donorName: { type: String },
     donorEmail: { type: String },
-    anonymity: { type: Boolean },
+    anonymity: { type: String },
 });
 
 const Donor = model('Donor', donorSchema);
