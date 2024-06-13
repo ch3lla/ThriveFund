@@ -48,7 +48,7 @@ const webhook = async (req, res) => {
               await saveTransactionDetails(paymentIntent);
               let response = await Applicant.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(amountPaid / 100), donations: 1  }}, {new: true});
               if (response){
-                notifySocketAfterSuccessfulPayment(id, response.amountRaised, paymentIntent.metadata.donor_name, paymentIntent.amount);
+                notifySocketAfterSuccessfulPayment(id, response.amountRaised, paymentIntent.metadata.donor_name, paymentIntent.amount, paymentIntent.metadata.anonymity);
                 return res.status(200).json({ error: "false", message: "successful", data: response});
               } else {
                 return res.status(401).json({ error: "true", message: "unsuccessful"});
