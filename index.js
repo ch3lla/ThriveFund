@@ -48,7 +48,7 @@ app.use(
 );
 
 // logger
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 
 // routes
 app.use('/api/v1', apiRoutes);
