@@ -64,8 +64,8 @@ app.listen(process.env.PORT, () => {
 // Create an HTTP server instance
 const server = http.createServer(app);
 
-// Start the Socket.IO server and pass the HTTP server instance
-startSocketServer(server, process.env.PORT);
+// Start the Socket.IO server and pass corsOptions
+startSocketServer(server, corsOptions);
 
 // Start the Express app
 server.listen(process.env.PORT, () => {
