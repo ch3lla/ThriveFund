@@ -1,12 +1,13 @@
 require('dotenv').config();
 const express = require('express');
-const { json, urlencoded } = require('express');
+const { urlencoded } = require('express');
 const cors = require('cors');
 const db = require('./config/db');
 const cloudinary = require('cloudinary').v2;
 const fileUpload = require("express-fileupload");
 const { startSocketServer } = require('./helpers/socket');
 const morgan = require('morgan');
+const http = require('http');
 
 const apiRoutes = require('./routes/index');
 
@@ -53,9 +54,20 @@ app.use(morgan('dev'));
 // routes
 app.use('/api/v1', apiRoutes);
 
-// web socket for payment listener
+/* // web socket for payment listener
 startSocketServer(process.env.SOCKET_SERVER_PORT);
 
 app.listen(process.env.PORT, () => {
+  console.log(`Server is running on localhost:${process.env.PORT}`);
+}); */
+
+// Create an HTTP server instance
+const server = http.createServer(app);
+
+// Start the Socket.IO server and pass the HTTP server instance
+startSocketServer(server, process.env.PORT);
+
+// Start the Express app
+server.listen(process.env.PORT, () => {
   console.log(`Server is running on localhost:${process.env.PORT}`);
 });
