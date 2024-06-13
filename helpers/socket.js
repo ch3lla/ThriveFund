@@ -17,7 +17,7 @@ const startSocketServer = (server, corsOptions) => {
 };
 
 const notifySocketAfterSuccessfulPayment = (fundraiserId, newAmountRaised, donorName, donorAmount, anonimity) => {
-  if (anonimity !== "anonymous") {
+  if (anonimity == "anonymous") {
     io.emit('paymentReceived', { fundraiserId, newAmountRaised, donorAmount });
   } else {
     io.emit('paymentReceived', { fundraiserId, newAmountRaised, donorName, donorAmount });
