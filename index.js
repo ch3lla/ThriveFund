@@ -6,6 +6,7 @@ const db = require('./config/db');
 const cloudinary = require('cloudinary').v2;
 const fileUpload = require("express-fileupload");
 const { startSocketServer } = require('./helpers/socket');
+const morgan = require('morgan');
 
 const apiRoutes = require('./routes/index');
 
@@ -45,12 +46,16 @@ app.use(
     responseOnLimit: "Max file size is 25mb",
   })
 );
+
+// logger
+app.use(morgan('combined'));
+
 // routes
 app.use('/api/v1', apiRoutes);
 
 // web socket for payment listener
-startSocketServer(process.env.PORT);
+startSocketServer(process.env.SOCKET_SERVER_PORT);
 
-/* app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on localhost:${process.env.PORT}`);
-}); */
+});
