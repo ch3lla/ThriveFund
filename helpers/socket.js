@@ -5,7 +5,7 @@ let io;
 const startSocketServer = (server, corsOptions) => {
   io = socketIO(server, {
     cors: {
-      origin: '*', // specify the origin for CORS
+      origin: corsOptions.origin, // specify the origin for CORS
       methods: ["GET", "POST"], // specify allowed methods
       credentials: true // allows cookies to be sent
     }
