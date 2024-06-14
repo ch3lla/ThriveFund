@@ -16,6 +16,10 @@ const {
   webhook
 } = require("../controllers/payment.controller");
 
+const {
+  getAlDonors,
+  getDonorsByFundraiserId
+} = require("../controllers/donor.controller");
 
 router.post('/auth/register', register);
 router.post('/auth/login', login);
@@ -28,5 +32,8 @@ router.get('/fundraiser', getAllApplicantDetails);
 
 router.post('/create-payment', createPaymentIntent);
 router.post('/webhook', webhook);
+
+router.get('/donors', getAlDonors);
+router.get('/donors/:id', getDonorsByFundraiserId);
 
 module.exports = router;
