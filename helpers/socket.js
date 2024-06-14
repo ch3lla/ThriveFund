@@ -5,10 +5,7 @@ let io;
 const startSocketServer = (server, corsOptions) => {
   io = socketIO(server, {
     cors: corsOptions,
-  });
-  
-  io.on('connection_error', (err) => {
-    console.error('WebSocket connection error:', err);
+    credentials: true
   });
 
   io.on('connection', (socket) => {
