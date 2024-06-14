@@ -22,8 +22,7 @@ const getDonorsByFundraiserId = async (req, res) => {
             return res.status(400).json({message: "No id"});
         }
 
-        const donors = Donor.find({fundraiserId: id});
-
+        const donors = await Donor.find({fundraiserId: id});
         if (!donors){
             return res.status(200).json({message: "No donors for this campaign", data: donors});
         }
