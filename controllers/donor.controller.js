@@ -1,7 +1,7 @@
 const Donor = require('../models/Donors');
 const errorHandler = require('../utils/errorHandler');
 
-const getAlDonors = async () => {
+const getAlDonors = async (req, res) => {
     try {
         const donors = await Donor.find();
 
@@ -15,7 +15,7 @@ const getAlDonors = async () => {
     }
 }
 
-const getDonorsByFundraiserId = async () => {
+const getDonorsByFundraiserId = async (req, res) => {
     const { id } = req.params;
     try {
         if (!id){
