@@ -45,7 +45,7 @@ const webhook = async (req, res) => {
               const paymentIntent = event.data.object;
               const id =  event.data.object.metadata['fundraiserId'];
               const amountPaid = event.data.object.amount_received;
-              await saveTransactionDetails(paymentIntent);
+              await saveTransactionDetails(paymentIntent, id);
               let response = await Applicant.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(amountPaid / 100), donations: 1  }}, {new: true});
               if (response){
                 notifySocketAfterSuccessfulPayment(id, response.amountRaised, paymentIntent.metadata.donor_name, paymentIntent.amount, paymentIntent.metadata.anonymity);
@@ -67,9 +67,10 @@ const webhook = async (req, res) => {
     }
 };
 
-const saveTransactionDetails = async (paymentIntent) => {
+const saveTransactionDetails = async (paymentIntent, id) => {
   await Donor.create({
       paymentIntentId: paymentIntent.id,
+      fundraiserId: id,
       amount: paymentIntent.amount,
       currency: paymentIntent.currency,
       donorName: paymentIntent.metadata.donor_name,
