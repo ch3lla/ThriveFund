@@ -8,11 +8,11 @@ const { notifySocketAfterSuccessfulPayment } = require('../helpers/socket');
 const createPaymentIntent = async (req, res) => {
   const stripe = new Stripe(process.env.STRIPE_SK_TEST_KEY);
   try {
-    const { fundraiserId, amount, name, email, anonymity } = req.body;
+    const { fundraiserId, amount, fullname, email, anonymity } = req.body;
 
     const metadata = {
       anonymity: anonymity ? 'anonymous' : 'known',
-      donor_name: name || '',
+      donor_name: fullname || '',
       donor_email: email || '',
       fundraiserId: fundraiserId
     };
