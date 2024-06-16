@@ -28,6 +28,7 @@ const processFileUpload = async function (req, res, next) {
     }
 
     const fileKey = 'fundingMedia[file]'; // Adjust to match your form field name
+    // const fileKey = 'fundingMedia'; uncommnt this when you want to update campaign images via postman
     const file = req.files[fileKey];
 
     if (!file) {

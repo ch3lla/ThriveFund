@@ -5,7 +5,9 @@ const {
   addFundRaisingDetails,
   getApplicantDetailsByCategory,
   getAllApplicantDetails, 
-  getApplicantDetailsById
+  getApplicantDetailsById,
+  populateDbWithTestData,
+  getApplicantDataAndUpdate
  } = require('../controllers/applicant.controller');
 const {
     processFileUpload,
@@ -35,5 +37,8 @@ router.post('/webhook', webhook);
 
 router.get('/donors', getAlDonors);
 router.get('/donors/:id', getDonorsByFundraiserId);
+
+router.post('/populateDb', populateDbWithTestData);
+router.post('/update', processFileUpload, getApplicantDataAndUpdate);
 
 module.exports = router;
