@@ -71,7 +71,7 @@ const saveTransactionDetails = async (paymentIntent, id) => {
   await Donor.create({
       paymentIntentId: paymentIntent.id,
       fundraiserId: id,
-      amount: paymentIntent.amount,
+      amount: parseFloat(paymentIntent.amount / 100),
       currency: paymentIntent.currency,
       donorName: paymentIntent.metadata.donor_name,
       donorEmail: paymentIntent.metadata.donor_email,
