@@ -95,71 +95,6 @@ const getApplicantDetailsById = async (req, res) => {
   }
 }
 
-const populateDbWithTestData = async (req, res) => {
-  try {
-    const data = req.body;
-    const promises = data.map(async (item) => {
-      const applicant = new Applicant({
-        userId: item.userId,
-        firstname: item.firstname,
-        lastname: item.lastname,
-        email: item.email,
-        phone: item.phone,
-        address: item.address,
-        fundraiserTitle: item.fundraiserTitle,
-        fundraiserDescription: item.fundraiserDescription,
-        goal: item.goal,
-        category: item.category,
-        deadline: item.deadline,
-        fundingMedia: item.fundingMedia.map(media => ({
-          name: media.name,
-          pathToFile: media.pathToFile,
-          publicId: media.publicId
-        })),
-        isApproved: item.isApproved,
-        amountRaised: item.amountRaised,
-        donations: item.donations
-      });
-
-      // Save the applicant to the database
-      return await applicant.save();
-    });
-
-    // Wait for all promises to complete
-    const results = await Promise.all(promises);
-
-    res.status(200).json({
-      message: "Data successfully added to the database.",
-      results: results
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: "An error occurred while populating the database.",
-      error: error.message
-    });
-  }
-};
-
-const getApplicantDataAndUpdate = async (req, res) => {
-  try {
-    const {
-      userId
-    } = req.body;
-
-    const fundingMedia =
-      {
-        name: req.body.name,
-        pathToFile: req.body.pathToFile,
-        publicId: req.body.publicId
-      };
-    const applicantDetails = await Applicant.findOneAndUpdate({userId: userId}, {fundingMedia: fundingMedia}, {new: true});
-    res.status(200).json(applicantDetails);
-  } catch (error) {
-    errorHandler(error, res);
-  }
-}
-
 const getAllApplicantDetails = async (req, res) => {
   try {
     const applicantDetails = await Applicant.find();
@@ -179,7 +114,6 @@ module.exports = {
     addFundRaisingDetails, 
     getApplicantDetailsByCategory, 
     getAllApplicantDetails,
-    getApplicantDetailsById,
-    populateDbWithTestData,
-    getApplicantDataAndUpdate };
+    getApplicantDetailsById
+   };
     

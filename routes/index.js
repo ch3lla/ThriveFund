@@ -5,9 +5,7 @@ const {
   addFundRaisingDetails,
   getApplicantDetailsByCategory,
   getAllApplicantDetails, 
-  getApplicantDetailsById,
-  populateDbWithTestData,
-  getApplicantDataAndUpdate
+  getApplicantDetailsById
  } = require('../controllers/applicant.controller');
 const {
     processFileUpload,
