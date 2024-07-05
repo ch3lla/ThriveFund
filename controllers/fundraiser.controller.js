@@ -1,5 +1,5 @@
 const { request, response } = require('express');
-const Applicant = require('../models/Applicants');
+const Fundraiser = require('../models/Fundraisers');
 const errorHandler = require('../utils/errorHandler');
 
 const addFundRaisingDetails = async (req, res) => {
@@ -31,7 +31,7 @@ const addFundRaisingDetails = async (req, res) => {
           publicId: req.body.publicId
         };
 
-      const newApplicant = new Applicant({
+      const newFundraiser = new Fundraiser({
         userId: _id,
         firstname,
         lastname,
@@ -46,35 +46,35 @@ const addFundRaisingDetails = async (req, res) => {
         fundingMedia,
       });
 
-      await newApplicant.save();
-      res.status(201).json({ message: 'Applicant details and files saved successfully!' });
+      await newFundraiser.save();
+      res.status(201).json({ message: 'Fundraiser details and files saved successfully!' });
   } catch (error) {
     errorHandler(error, res);
   }
 };
 
-const getApplicantDetailsByCategory = async (req, res) => {
+const getFundraiserDetailsByCategory = async (req, res) => {
   try {
     let { category } = req.params;
 
     if (!category) {
-      res.status(400).json({ message: 'Category cannot be null'});
+      return res.status(400).json({ message: 'Category cannot be null'});
     }
 
-    const applicantDetails = await Applicant.find({ category });
+    const FundraiserDetails = await Fundraiser.find({ category });
 
-    if (!applicantDetails || applicantDetails.length === 0) {
-      return res.status(404).json({ message: 'No applicants found for this category' });
+    if (!FundraiserDetails || FundraiserDetails.length === 0) {
+      return res.status(404).json({ message: 'No Fundraiser found for this category' });
     }
 
-    res.status(200).json(applicantDetails);
+    res.status(200).json(FundraiserDetails);
     
   } catch (error) {
     errorHandler(error, res);
   }
 }
 
-const getApplicantDetailsById = async (req, res) => {
+const getFundraiserDetailsById = async (req, res) => {
   try {
     let { id } = req.params;
 
@@ -82,28 +82,28 @@ const getApplicantDetailsById = async (req, res) => {
       res.status(400).json({ message: 'ID cannot be null'});
     }
 
-    const applicantDetails = await Applicant.findById(id);
+    const FundraiserDetails = await Fundraiser.findById(id);
 
-    if (!applicantDetails || applicantDetails.length === 0) {
-      return res.status(404).json({ message: 'No applicants found with this ID' });
+    if (!FundraiserDetails || FundraiserDetails.length === 0) {
+      return res.status(404).json({ message: 'No Fundraiser found with this ID' });
     }
 
-    res.status(200).json(applicantDetails);
+    res.status(200).json(FundraiserDetails);
     
   } catch (error) {
     errorHandler(error, res);
   }
 }
 
-const getAllApplicantDetails = async (req, res) => {
+const getAllFundraiserDetails = async (req, res) => {
   try {
-    const applicantDetails = await Applicant.find();
+    const FundraiserDetails = await Fundraiser.find();
 
-    if (!applicantDetails || applicantDetails.length === 0) {
-      return res.status(404).json({ message: 'No applicants found' });
+    if (!FundraiserDetails || FundraiserDetails.length === 0) {
+      return res.status(404).json({ message: 'No Fundraiser found' });
     }
 
-    res.status(200).json(applicantDetails);
+    res.status(200).json(FundraiserDetails);
     
   } catch (error) {
     errorHandler(error, res);
@@ -112,8 +112,8 @@ const getAllApplicantDetails = async (req, res) => {
 
 module.exports = { 
     addFundRaisingDetails, 
-    getApplicantDetailsByCategory, 
-    getAllApplicantDetails,
-    getApplicantDetailsById
+    getFundraiserDetailsByCategory, 
+    getAllFundraiserDetails,
+    getFundraiserDetailsById
    };
     

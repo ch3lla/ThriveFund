@@ -1,7 +1,7 @@
 const Stripe = require('stripe');
 const errorHandler = require('../utils/errorHandler');
 const Donor = require('../models/Donors');
-const Applicant = require('../models/Applicants');
+const Fundraisers = require('../models/Fundraisers');
 const { notifySocketAfterSuccessfulPayment } = require('../helpers/socket');
 
 
@@ -46,8 +46,9 @@ const webhook = async (req, res) => {
               const id =  event.data.object.metadata['fundraiserId'];
               const amountPaid = event.data.object.amount_received;
               await saveTransactionDetails(paymentIntent, id);
-              let response = await Applicant.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(amountPaid / 100), donations: 1  }}, {new: true});
+              let response = await Fundraisers.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(amountPaid / 100), donations: 1  }}, {new: true});
               if (response){
+                notifySocketAfterSuccessfulPayment(id, response.amountRaised, paymentIntent.metadata.donor_name, paymentIntent.amount, paymentIntent.metadata.anonymity);
                 return res.status(200).json({ error: "false", message: "successful", data: response});
               } else {
                 return res.status(401).json({ error: "true", message: "unsuccessful"});
@@ -64,6 +65,18 @@ const webhook = async (req, res) => {
     } catch (error) {
         errorHandler(error, res);
     }
+};
+
+const saveTransactionDetails = async (paymentIntent, id) => {
+  await Donor.create({
+      paymentIntentId: paymentIntent.id,
+      fundraiserId: id,
+      amount: parseFloat(paymentIntent.amount / 100),
+      currency: paymentIntent.currency,
+      donorName: paymentIntent.metadata.donor_name,
+      donorEmail: paymentIntent.metadata.donor_email,
+      anonymity: paymentIntent.metadata.anonymity,
+  });
 };
 
 module.exports = { createPaymentIntent, webhook }

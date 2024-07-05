@@ -3,10 +3,10 @@ const { register, login } = require('../controllers/auth');
 const { verifyToken } = require('../utils/verifyToken');
 const { 
   addFundRaisingDetails,
-  getApplicantDetailsByCategory,
-  getAllApplicantDetails, 
-  getApplicantDetailsById
- } = require('../controllers/applicant.controller');
+  getFundraiserDetailsByCategory,
+  getAllFundraiserDetails, 
+  getFundraiserDetailsById
+ } = require('../controllers/fundraiser.controller');
 const {
     processFileUpload,
   } = require("../middleware/media_upload");
@@ -21,14 +21,18 @@ const {
   getDonorsByFundraiserId
 } = require("../controllers/donor.controller");
 
+const {
+  getSingleUserDetail
+} = require ("../controllers/dashboard.controller");
+
 router.post('/auth/register', register);
 router.post('/auth/login', login);
 
 router.post('/upload', verifyToken, processFileUpload, addFundRaisingDetails);
 
-router.get('/fundraiser/:category', getApplicantDetailsByCategory);
-router.get('/fundraiser/details/:id', getApplicantDetailsById);
-router.get('/fundraiser', getAllApplicantDetails);
+router.get('/fundraiser/:category', getFundraiserDetailsByCategory);
+router.get('/fundraiser/details/:id', getFundraiserDetailsById);
+router.get('/fundraiser', getAllFundraiserDetails);
 
 router.post('/create-payment', createPaymentIntent);
 router.post('/webhook', webhook);
@@ -36,7 +40,9 @@ router.post('/webhook', webhook);
 router.get('/donors', getAlDonors);
 router.get('/donors/:id', getDonorsByFundraiserId);
 
-router.post('/populateDb', populateDbWithTestData);
-router.post('/update', processFileUpload, getApplicantDataAndUpdate);
+// router.post('/populateDb', populateDbWithTestData);
+// router.post('/update', processFileUpload, getFundraiserDataAndUpdate);
+
+router.get('/dashboard', verifyToken, getSingleUserDetail);
 
 module.exports = router;

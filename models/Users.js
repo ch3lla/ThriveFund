@@ -40,6 +40,7 @@ const userSchema = new Schema({
       },
     },
   ],
+  fundraisers: { type: Schema.Types.ObjectId, ref: 'Fundraisers' }
 }, { timestamps: true });
 
 userSchema.virtual('id').get(function () {
