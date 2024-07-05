@@ -16,7 +16,7 @@ const fileSchema = new Schema({
   }
 });
 
-const applicantSchema = new Schema({
+const fundraiserSchema = new Schema({
   userId: {
     type: String,
     required: true
@@ -73,5 +73,5 @@ const applicantSchema = new Schema({
   donations: { type: Number, default: 0 },
 }, { timestamps: true });
 
-const Applicant = model('Applicant', applicantSchema);
-module.exports = Applicant;
+const Fundraiser = model('Fundraiser', fundraiserSchema);
+module.exports = Fundraiser;

@@ -22,7 +22,8 @@ const {
 } = require("../controllers/donor.controller");
 
 const {
-  getSingleUserDetail
+  getSingleUserDetail,
+  getCurrentUserFundraisers
 } = require ("../controllers/dashboard.controller");
 
 router.post('/auth/register', register);
@@ -44,5 +45,6 @@ router.get('/donors/:id', getDonorsByFundraiserId);
 // router.post('/update', processFileUpload, getFundraiserDataAndUpdate);
 
 router.get('/dashboard', verifyToken, getSingleUserDetail);
+router.get('/dashboard/fundraisers', verifyToken, getCurrentUserFundraisers);
 
 module.exports = router;

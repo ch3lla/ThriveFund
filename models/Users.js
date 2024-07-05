@@ -40,7 +40,7 @@ const userSchema = new Schema({
       },
     },
   ],
-  fundraisers: { type: Schema.Types.ObjectId, ref: 'Fundraisers' }
+  fundraisers: { type: Schema.Types.ObjectId, ref: 'Fundraiser' }
 }, { timestamps: true });
 
 userSchema.virtual('id').get(function () {
@@ -57,6 +57,11 @@ userSchema.methods.generateAuthToken = async function () {
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
+};
+
+userSchema.methods.getPopulatedFundraisers = async function() {
+  await this.populate('fundraisers');
+  return this.fundraisers;
 };
 
 userSchema.statics.findByCredentials = async (email, password) => {
