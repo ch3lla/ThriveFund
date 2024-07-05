@@ -37,8 +37,6 @@ const getCurrentUserFundraisers = async (req, res) => {
         
         const populatedFundraisers = await user.getPopulatedFundraisers();
 
-        console.log(populatedFundraisers);
-
         if (!populatedFundraisers){
             return res.status(404).json({message: "user has no fundraisers"});
         }
