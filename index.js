@@ -23,7 +23,7 @@ cloudinary.config({
 
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_LOCAL_URL, process.env.FRONTEND_BASE_URL],
+  origin: ["http://localhost:5173/","https://thrivefund.vercel.app/"],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
