@@ -23,7 +23,8 @@ const {
 
 const {
   getSingleUserDetail,
-  getCurrentUserFundraisers
+  getCurrentUserFundraisers,
+  updateUserDetails
 } = require ("../controllers/dashboard.controller");
 
 router.post('/auth/register', register);
@@ -46,5 +47,6 @@ router.get('/donors/:id', getDonorsByFundraiserId);
 
 router.get('/dashboard', verifyToken, getSingleUserDetail);
 router.get('/dashboard/fundraisers', verifyToken, getCurrentUserFundraisers);
+router.patch('/dashboard', verifyToken, updateUserDetails);
 
 module.exports = router;
