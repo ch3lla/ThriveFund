@@ -30,7 +30,7 @@ const userSchema = new Schema({
     minLength: [11, 'Phone number must be at least 11 characters'],
     validate: [isMobilePhone, 'Phone number must be a valid phone number'],
     trim: true,
-  },
+  },/* 
   tokens: [
     {
       _id: false,
@@ -39,7 +39,7 @@ const userSchema = new Schema({
         required: true,
       },
     },
-  ],
+  ], */
   fundraisers: { type: Schema.Types.ObjectId, ref: 'Fundraiser' }
 }, { timestamps: true });
 
@@ -54,7 +54,7 @@ userSchema.set('toJSON', {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '5h' });
-  user.tokens = user.tokens.concat({ token });
+  // user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
 };

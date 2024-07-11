@@ -67,7 +67,7 @@ const updateUserDetails = async (req, res) => {
         await user.save();
 
         user = user.toObject();
-        delete user.tokens;
+        delete user.token
 
         res.status(200).json({ message: 'User details updated successfully', user });
 
