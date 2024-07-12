@@ -173,13 +173,6 @@ const addBankdetailsToUser = async (req, res) => {
 const removeBankDetailsFromUser = async (req, res) => {
     const { _id } = req.user;
     try {
-        /* const { accountNumber } = req.params;
-
-        if (!accountNumber) {
-            res.status(400).json({ message : "Invalid account number" });
-            return;
-        } */
-
         const user = await User.findById(_id);
 
         if (!user) {
