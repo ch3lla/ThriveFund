@@ -24,7 +24,9 @@ const {
 const {
   getSingleUserDetail,
   getCurrentUserFundraisers,
-  updateUserDetails
+  updateUserDetails,
+  getAllBanks,
+  addBankdetailsToUser
 } = require ("../controllers/dashboard.controller");
 
 router.post('/auth/register', register);
@@ -47,6 +49,8 @@ router.get('/donors/:id', getDonorsByFundraiserId);
 
 router.get('/dashboard', verifyToken, getSingleUserDetail);
 router.get('/dashboard/fundraisers', verifyToken, getCurrentUserFundraisers);
+router.get('/dashboard/banks', verifyToken, getAllBanks);
 router.patch('/dashboard', verifyToken, updateUserDetails);
+router.patch('/dashboard/bankDetails', verifyToken, addBankdetailsToUser);
 
 module.exports = router;

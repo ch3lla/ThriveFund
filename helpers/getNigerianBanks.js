@@ -1,8 +1,6 @@
 const axios = require('axios');
-const errorHandler = require('../utils/errorHandler');
 
-
-const getAllNigerianBanks = async (req, res) => {
+const getAllNigerianBanks = async () => {
     try {
         const response = await axios.get('https://nigerianbanks.xyz/');
 
@@ -12,9 +10,9 @@ const getAllNigerianBanks = async (req, res) => {
             code: bank.code
         }));
   
-        res.status(200).json(simplifiedBanks);
+        return { simplifiedBanks };
     } catch (error) {
-        errorHandler(res, error);
+        console.error(error);
     }
 }
 
