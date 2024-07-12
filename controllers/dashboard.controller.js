@@ -1,5 +1,8 @@
 const Users = require('../models/Users');
 const errorHandler = require('../utils/errorHandler');
+const axios = requirw('axios');
+const getAllNigerianBanks = require('../helpers/getNigerianBanks');
+const User = require('../models/Users');
 
 const getSingleUserDetail = async (req, res) => {
     const { _id } = req.user;
@@ -81,6 +84,40 @@ const updateUserDetails = async (req, res) => {
     } catch (error) {
     errorHandler(error, res);
   }
+}
+
+const addBankdetailsToUser = async (req, res) => {
+    const { _id } = req.user;
+    try {
+        // const banks = getAllNigerianBanks();
+        const { accountNumber, bankCode, bankName } = req.body;
+
+        if (!accountNumber || !bankCode ){
+            res.status(400).json({ message: 'account number or bank code is invalid' });
+            return;
+        }
+
+        const response = await axios(`https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankcode}`, {
+            headers: {
+                "Authorization" : `Bearer ${process.env.PAYSTACK_SK_TEST_KEY}`
+            }
+        });
+
+        const account_details = {
+            accountNumber: response.account_number,
+            accountName: response.account_name,
+            bankCode: bankCode,
+            bankName: bankName
+        };
+
+        if (response.status) {
+            await User.findByIdAndUpdate(_id, { accountDetails: account_details }, { new: true });
+        }
+
+
+    } catch (error) {
+        errorHandler(res, error);
+    }
 }
 
 module.exports = {

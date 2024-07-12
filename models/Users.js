@@ -3,6 +3,22 @@ const { compare, hash } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const { isMobilePhone, isEmail } = require('validator');
 
+const accountSchema = new Schema({
+  accountNumber: { 
+    type: String
+  },
+  accountName: {
+    type: String
+  },
+  bankCode: {
+    type: String
+  },
+  bankName: {
+    type: String
+  },
+  _id: false
+});
+
 const userSchema = new Schema({
   firstname: {
     type: String,
@@ -40,6 +56,10 @@ const userSchema = new Schema({
       },
     },
   ], */
+  forgotPasswordToken: {
+    type: String
+  },
+  accountDetails: accountSchema,
   fundraisers: { type: Schema.Types.ObjectId, ref: 'Fundraiser' }
 }, { timestamps: true });
 
