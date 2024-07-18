@@ -52,6 +52,10 @@ app.use(
 app.use(morgan('dev'));
 
 // routes
+
+app.get('/', (req, res) => {
+  res.send("Hi!😁");
+})
 app.use('/api/v1', apiRoutes);
 
 /* // web socket for payment listener
