@@ -65,9 +65,13 @@ app.listen(process.env.PORT, () => {
 const server = http.createServer(app);
 
 // Start the Socket.IO server and pass corsOptions
-startSocketServer(server, corsOptions);
+// startSocketServer(server, corsOptions);
 
 // Start the Express app
 server.listen(process.env.PORT, () => {
   console.log(`Server is running on localhost:${process.env.PORT}`);
 });
+
+module.exports = (req, res) => {
+  server.emit('request', req, res);
+};
