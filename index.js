@@ -72,7 +72,8 @@ const server = http.createServer(app);
 // startSocketServer(server, corsOptions);
 
 // Start the Express app
-server.listen(process.env.PORT, () => {
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
   console.log(`Server is running on localhost:${process.env.PORT}`);
 });
 
