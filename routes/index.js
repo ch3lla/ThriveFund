@@ -13,7 +13,9 @@ const {
 
 const {
   createPaymentIntent,
-  webhook
+  webhook,
+  initializeTranscation,
+  paystackwebhook
 } = require("../controllers/payment.controller");
 
 const {
@@ -39,8 +41,13 @@ router.get('/fundraiser/:category', getFundraiserDetailsByCategory);
 router.get('/fundraiser/details/:id', getFundraiserDetailsById);
 router.get('/fundraiser', getAllFundraiserDetails);
 
-router.post('/create-payment', createPaymentIntent);
-router.post('/webhook', webhook);
+/** took out stripe payment  */
+// router.post('/create-payment', createPaymentIntent);
+// router.post('/webhook', webhook);
+
+/** working with paystack payment service now */
+router.post('/create-payment', initializeTranscation);
+router.post('/webhook', paystackwebhook);
 
 router.get('/donors', getAlDonors);
 router.get('/donors/:id', getDonorsByFundraiserId);

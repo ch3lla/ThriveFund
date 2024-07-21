@@ -1,4 +1,5 @@
 const Stripe = require('stripe');
+const axios = require('axios');
 const errorHandler = require('../utils/errorHandler');
 const Donor = require('../models/Donors');
 const Fundraisers = require('../models/Fundraisers');
@@ -79,4 +80,82 @@ const saveTransactionDetails = async (paymentIntent, id) => {
   });
 };
 
-module.exports = { createPaymentIntent, webhook }
+
+const initializeTranscation = async (req, res) => {
+  try {
+    const { fundraiserId, amount, fullname, email, anonymity } = req.body;
+
+    const metadata = {
+      anonymity: anonymity ? 'anonymous' : 'known',
+      donor_name: fullname || '',
+      donor_email: email || '',
+      fundraiserId: fundraiserId
+    };
+
+    const paystackUrl = 'https://api.paystack.co/transaction/initialize';
+
+    const params =  {
+      "email": email,
+      "amount": amount * 100,
+      "currency": 'NGN',
+      "metadata": metadata,
+    };
+
+    const { data } = await axios.post(paystackUrl, params,
+      {
+        headers: {
+          "Authorization" : `Bearer ${process.env.PAYSTACK_SK_TEST_KEY}`
+        }
+      }
+    );
+
+    if (data.status) {
+      res.status(200).send({
+        authorizationUrl: data.data.authorization_url,
+      });
+    } else {
+      res.status(400).json({ message: 'Something went wrong'});
+      return;
+    }
+
+  } catch(error){
+    errorHandler(error, res);
+  }
+}
+
+const paystackwebhook = async (req, res) => {
+  const secret = process.env.PAYSTACK_SK_TEST_KEY;
+  try {
+    const hash = crypto.createHmac('sha512', secret).update(JSON.stringify(req.body)).digest('hex');
+    if (hash == req.headers['x-paystack-signature']) {
+      const eventData = req.body;
+      switch (eventData.event) {
+        case 'paymentrequest.success':
+          const paymentIntent = eventData.data;
+          const id =  eventData.data.metadata['fundraiserId'];
+          const amountPaid = eventData.data.amount;
+          await saveTransactionDetails(paymentIntent, id);
+          let response = await Fundraisers.findByIdAndUpdate(id, {$inc: { amountRaised: parseFloat(amountPaid / 100), donations: 1  }}, {new: true});
+          if (response){
+           // notifySocketAfterSuccessfulPayment(id, response.amountRaised, paymentIntent.metadata.donor_name, paymentIntent.amount, paymentIntent.metadata.anonymity);
+            return res.status(200).json({ error: "false", message: "successful", data: response});
+          } else {
+            return res.status(401).json({ error: "true", message: "unsuccessful"});
+          }
+        case 'invoice.payment_failed':
+            const paymentIntentFailed = eventData.data;
+            // Handle failed payment
+            break;
+        default:
+            throw new Error(`Unhandled eventData type: ${eventData.type}.`);
+      }
+      res.send(200).json("successful");
+    } else {
+      res.send(400).json("request is not from paystack");
+    }
+    
+  } catch (error) {
+        errorHandler(error, res);
+  }
+}
+module.exports = { createPaymentIntent, webhook, initializeTranscation, paystackwebhook }
