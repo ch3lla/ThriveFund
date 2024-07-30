@@ -23,7 +23,7 @@ cloudinary.config({
 
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_LOCAL_URL, process.env.FRONTEND_BASE_URL],
+  origin: [process.env.FRONTEND_LOCAL_URL, process.env.FRONTEND_BASE_URL, process.env.FRONTEND_LOCAL_URL_2],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
