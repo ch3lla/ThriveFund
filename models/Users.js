@@ -76,7 +76,16 @@ userSchema.methods.generateAuthToken = async function () {
   const token = sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '5h' });
   // user.tokens = user.tokens.concat({ token });
   await user.save();
-  return token;
+  const refreshToken = await user.generateRefreshToken();
+  return { token, refreshToken };
+};
+
+userSchema.methods.generateRefreshToken = async function () {
+  const user = this;
+  const refreshToken = sign({ _id: user._id.toString() }, process.env.JWT_REFRESH_SECRET,  { expiresIn: '7d' } );
+
+  await user.save();
+  return refreshToken;
 };
 
 userSchema.methods.getPopulatedFundraisers = async function() {
