@@ -30,6 +30,10 @@ const errorHandler = (error, res) => {
         return;
     }
 
+    if (error.message === 'This email has not been registered on our system' || error.message === 'Invalid password'){
+        res.status(400).json({ message: 'Invalid username or password'});
+    }
+
     // Handle any other unexpected errors
     else {
         // Respond with a 500 Internal Server Error status and the error message
