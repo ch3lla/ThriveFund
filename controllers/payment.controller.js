@@ -99,6 +99,7 @@ const initializeTranscation = async (req, res) => {
       "amount": amount * 100,
       "currency": 'NGN',
       "metadata": metadata,
+      "callback_url": `${process.env.FRONTEND_LOCAL_URL_2}/`
     };
 
     const { data } = await axios.post(paystackUrl, params,
